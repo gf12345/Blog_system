@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>COUTINHO的网站</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+    <link rel="stylesheet" href="assets/css/amazeui.min.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+  </head>
+
+  <body id="blog">
+    <div id="app">
+      <header class="am-g am-g-fixed blog-fixed blog-text-center blog-header">
+        <div class="am-u-sm-8 am-u-sm-centered">
+          <h2 class="am-hide-sm-only">库蒂尼奥的首页</h2>
+        </div>
+      </header>
+      <hr>
+      <!-- nav start -->
+      <nav class="am-g am-g-fixed blog-fixed blog-nav">
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only blog-button" data-am-collapse="{target: '#blog-collapse'}" ><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+        <div class="am-collapse am-topbar-collapse" id="blog-collapse">
+          <ul class="am-nav am-nav-pills am-topbar-nav">
+            <li class="am-active"><a href="lw-index.html">首页</a></li>
+            <li class="am-dropdown" data-am-dropdown>
+              <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+                首页布局 <span class="am-icon-caret-down"></span>
+              </a>
+              <ul class="am-dropdown-content">
+                <li><a href="lw-index.html">1. blog-index-standard</a></li>         
+                <li><a href="lw-index-nosidebar.html">2. blog-index-nosidebar</a></li>
+                <li><a href="lw-index-center.html">3. blog-index-layout</a></li>
+                <li><a href="lw-index-noslider.html">4. blog-index-noslider</a></li>
+              </ul>
+            </li>
+            <li><a href="lw-article.html">标准文章</a></li>
+            <li><a href="lw-img.html">图片库</a></li>
+            <li><a href="lw-article-fullwidth.html">全宽页面</a></li>
+            <li><a href="lw-timeline.html">存档</a></li>
+          </ul>
+          <form class="am-topbar-form am-topbar-right am-form-inline" role="search">
+            <div class="am-form-group">
+              <input type="text" class="am-form-field am-input-sm" placeholder="搜索">
+            </div>
+          </form>
+        </div>
+      </nav>
+      <hr>
+      <!-- nav end -->
+      <!-- content srart -->
+      <div class="am-g am-g-fixed blog-fixed">
+        <div class="am-u-md-8 am-u-sm-12">
+
+          <article class="am-g blog-entry-article"v-for="blog in blog_list">
+            <div class="am-u-lg-6 am-u-md-12 am-u-sm-12 blog-entry-img">
+              <img src="assets/i/f10.jpg" alt="" class="am-u-sm-12">
+            </div>
+            <div class="am-u-lg-6 am-u-md-12 am-u-sm-12 blog-entry-text">
+              <span><a href="" class="blog-color"v-if="tag_list.length>0">{{get_tagname_by_tag_id(blog.tag_id)}}&nbsp;</a></span>
+              <span> @Coutinho &nbsp;</span>
+              <span>{{blog.ctime}}</span>
+              <h1><a href="">{{blog.title}}</a></h1>
+              <span v-show="status=='blog_admin'">
+                <button type="button" class="am-btn am-btn-success"v-on:click="blog_edit(blog.id)">编辑</button>
+                <button type="button" class="am-btn am-btn-warning"v-on:click="blog_delete(blog.id)">删除</button>
+              </span>
+            </div>
+          </article>    
+          <ul class="am-pagination">
+            <li class="am-pagination-prev"><a v-on:click="into_admin_status">&laquo; 管理</a></li>
+            <li class="am-pagination-next"><a v-on:click="">新增 &raquo;</a></li>
+          </ul>
+        </div>
+
+        <div class="am-u-md-4 am-u-sm-12 blog-sidebar">          
+          <div class="blog-clear-margin blog-sidebar-widget blog-bor am-g ">
+            <h2 class="blog-title"><span>TAG cloud</span></h2>
+            <div class="am-u-sm-12 blog-clear-padding">
+              <a href="" class="blog-tag"v-for="tag in tag_list">{{tag.name}}</a>
+            </div>
+          </div>
+          <div class="blog-sidebar-widget blog-bor">
+          </div>
+        </div>
+      </div>
+      <!-- content end -->
+
+
+
+      <footer class="blog-footer">
+        <div class="blog-text-center">Made with love By {{user}}</div>    
+      </footer>
+    </div>
+
+
+
+    <!--[if (gte IE 9)|!(IE)]><!-->
+      <script src="assets/js/jquery.min.js"></script>
+      <script src="assets/js/amazeui.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+      <script>
+        var app = new Vue({
+          el: '#app',
+          data: {
+            user: 'Coutinho!',
+            status:'blog_list',//blog_admin blog_edit,blog_new
+            tag_list:[
+              {id:1,name:"C++"},
+              {id:2,name:"Java"},
+              {id:3,name:"Mysql"},
+              {id:4,name:"Linux"}
+            ],
+            blog_list:[
+              {id:1,tag_id:1,title:"这是一个C++博客",content:"C++难学啊",ctime:"2021-1-20 12:20:31"},
+              {id:2,tag_id:2,title:"这是一个Java博客",content:"Java难学哟",ctime:"2021-1-20 12:21:31"},
+              {id:3,tag_id:3,title:"这是一个Mysql博客",content:"Mysql难学呀",ctime:"2021-1-20 12:22:31"},
+              {id:4,tag_id:4,title:"这是一个Linux博客",content:"Linux难学额",ctime:"2021-1-20 12:23:31"}
+            ]
+          },
+          methods:{
+            get_tagname_by_tag_id:function(tag_id){
+              for(idx in this.tag_list){
+                if(this.tag_list[idx].id==tag_id){
+                  return this.tag_list[idx].name;
+                }
+              }
+              return "未知";
+            },
+            into_admin_status:function(){
+              this.status='blog_admin';
+            },
+            blog_delete:function(blog_id){
+              $.ajax({
+                url:"/blog/"+blog_id,
+                type:"delete",
+                context:this,
+                success:function(result){
+                }
+              })    
+            },
+            get_blog_list:function(){
+              $.ajax:({
+                url:"/blog",
+                type:"get",
+                context:this,
+                success:function(result){
+                  this.blog_list=result;
+                }
+              })
+            },
+            get_tag_list:function(){
+              $.ajax:({
+                url:"/tag",
+                type:"get",
+                context:this,
+                success:function(result){
+                  this.tag_list=result;
+                }
+              })
+            } 
+          }
+        });
+app.get_tag_list();
+app.get_blog_list();
+      </script>
+  </body>
+</html>
