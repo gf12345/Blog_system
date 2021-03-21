@@ -8,7 +8,7 @@
 #include"db.hpp"
 #include"httplib.h"
 using namespace httplib;
-blog_system::TableBlog *table_blog;
+blog_system::TableBlog *table_blog;//全局变量
 blog_system::TableTag *table_tag;
 void InsertBlog(const Request& req,Response& rsp){
     Json::Reader reader;
@@ -21,7 +21,6 @@ void InsertBlog(const Request& req,Response& rsp){
         rsp.status=400;
         errmsg["ok"]=false;
         errmsg["reason"]="parse blog json failed!";
-        //rsp.body=writer.write(errmsg);
         rsp.set_content(writer.write(errmsg),"application/json");
         return;
     }
@@ -41,6 +40,7 @@ void DeleteBlog(const Request& req,Response& rsp){
     if(!ret){
         printf("DeleteBlog delete from database falied\n");
         rsp.status=500;
+        return;
     }
     rsp.status=200;
     return;
@@ -55,11 +55,12 @@ void UpdateBlog(const Request& req,Response& rsp){
         rsp.status=400;
         return;
     }
-    blog["id"]=blog_id;
+    blog["id"]=blog_id; //再次确认id
     ret=table_blog->Update(blog);
     if(!ret){
         printf("UpdateBlog update database falied\n");
         rsp.status=500;
+        return;
     }
     rsp.status=200;
     return;
@@ -68,8 +69,9 @@ void GetAllBlog(const Request& req,Response& rsp){
     Json::Value blogs;
     bool ret=table_blog->Getall(&blogs);
     if(!ret){
-        printf("GetAllBlog getall database falied\n");
+        printf("GetAllBlog falied\n");
         rsp.status=500;
+        return;
     }
     Json::FastWriter writer;
     rsp.set_content(writer.write(blogs),"application/json");
@@ -84,6 +86,7 @@ void GetOneBlog(const Request& req,Response& rsp){
     if(!ret){
         printf("GetOneBlog getone database falied\n");
         rsp.status=500;
+        return;
     }
     Json::FastWriter writer;
     rsp.set_content(writer.write(blog),"application/json");
@@ -101,7 +104,6 @@ void InsertTag(const Request& req,Response& rsp){
         rsp.status=400;
         errmsg["ok"]=false;
         errmsg["reason"]="parse tag json failed!";
-        //rsp.body=writer.write(errmsg);
         rsp.set_content(writer.write(errmsg),"application/json");
         return;
     }
@@ -120,6 +122,7 @@ void DeleteTag(const Request& req,Response& rsp){
     if(!ret){
         printf("DeleteTag delete from database falied\n");
         rsp.status=500;
+        return;
     }
     rsp.status=200;
     return;
@@ -139,16 +142,18 @@ void UpdateTag(const Request& req,Response& rsp){
     if(!ret){
         printf("UpdateTag update database falied\n");
         rsp.status=500;
+        return;
     }
     rsp.status=200;
     return;
 }
 void GetAllTag(const Request& req,Response& rsp){
     Json::Value tags;
-   bool ret=table_tag->Getall(&tags);
+    bool ret=table_tag->Getall(&tags);
     if(!ret){
         printf("GetAllTag getall database falied\n");
         rsp.status=500;
+        return;
     }
     Json::FastWriter writer;
     rsp.set_content(writer.write(tags),"application/json");
@@ -163,6 +168,7 @@ void GetOneTag(const Request& req,Response& rsp){
     if(!ret){
         printf("GetOneTag getone database falied\n");
         rsp.status=500;
+        return;
     }
     Json::FastWriter writer;
     rsp.set_content(writer.write(tag),"application/json");
